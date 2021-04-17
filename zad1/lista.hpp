@@ -173,7 +173,6 @@ void List<T>::pop_front() {
 
   temp->next_ = nullptr; //isto vjerovatno bespotrebno jer se svakako ispod brise temp
   delete temp;
-
 };
 
 template <typename T>
