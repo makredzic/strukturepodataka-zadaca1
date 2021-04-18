@@ -6,8 +6,10 @@ struct Handler {
     void print() const;
     void insert() ;
     void remove() ;
-    
-    private: std::list<char> list_;
+
+    private:
+    const char dna_[4] = {'A', 'T', 'C', 'G'};
+    std::list<char> list_;
 };
 
 void Handler::print() const {
@@ -20,9 +22,22 @@ void Handler::print() const {
 
 void Handler::insert() {
 
+    std::cout << "Position: ";
+    unsigned short pos;
+    std::cin >> pos;
+
+    std::cout << "\nValue: ";
+
 }
 
 void Handler::remove() {
 
+    std::cout << "Position: ";
+    unsigned short pos;
+    std::cin >> pos;
+
+    std::cout << "\nLength: ";
+    unsigned short len;
+    std::cin >> len;
 
 }

@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Handler.hpp"
 
-const char dna_molecules[4] = {'A', 'T', 'C', 'G'};
 const short choices[4] = {1, 2, 3, 4};
 
 Handler handler;
@@ -9,7 +8,7 @@ Handler handler;
 int main() {
 
     std::cout << "Welcome to DNA storage. Please enter one of the following options:\n\n";
-    std::cout << "\t1. Print\n\t2. Insert <pos> <lanac>\n\t3. Remove <pos> <len>\n\n";
+    std::cout << "\t1. Print\n\t2. Insert <pos> <lanac>\n\t3. Remove <pos> <len>\n\t4. Exit\n\n";
 
     short cmd = 0;
     bool loop = true;
