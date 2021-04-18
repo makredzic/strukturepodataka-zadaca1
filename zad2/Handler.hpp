@@ -13,6 +13,8 @@ struct Handler {
 void Handler::print() const {
 
     std::cout << "DNA: ";
+    for (auto item : list_) std::cout << item;
+    std::cout << std::endl;
 
 }
 
