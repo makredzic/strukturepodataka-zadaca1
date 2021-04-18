@@ -32,8 +32,16 @@ int main ()  {
   lista1.push_front(2);
   lista1.push_back(4);
   lista1.push_front(1);
+	lista1.push_back(5);
   lista1.print();
-  std::cout << "Lista 1 size: " << lista1.size() << std::endl;
+	
+	//lista1 = <1, 2, 3, 4, 5>
+	auto it = lista1.begin();
+	it++;
+	it++;
+
+	lista1.insert(it, 20); //izmedju 2 i 3 treba 420 bit
+	// lista1.print();
 
   return 0;
 }

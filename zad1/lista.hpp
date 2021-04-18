@@ -66,6 +66,18 @@ public:
         return temp;
       };
       
+      iterator& operator--() {
+        if (p_ != nullptr) p_ = p_->prev_;  
+        return *this;
+      };
+      
+      iterator operator--(int) {
+        auto temp = iterator{p_};
+        if (p_ != nullptr) p_ = p_->prev_;
+        
+        return temp;
+      };
+
       bool operator==(const iterator& other) const {
         return p_ == other.p_;
       }
@@ -81,7 +93,9 @@ public:
       T& operator->() {
         return p_->element_; 
       }
-};
+
+			friend List;
+	};
 
   iterator begin() {return iterator{head_};}
   iterator end() {return iterator{};} //vracamo iterator koji pokazuje na nullptr, default konstruktor inicijalizira sa nullptr pa ne pise u {} eskplicitno nullptr
@@ -216,6 +230,7 @@ List<T>& List<T>::operator=(List&& other) {
 };
 
 template<typename T>
+
 void List<T>::clear() {
   if (size_ == 0) return;
 
@@ -237,4 +252,48 @@ void List<T>::print() const {
     std::cout << temp->element_ << " ";
   }
   std::cout << std::endl;
+};
+
+template <typename T>
+void List<T>::insert(iterator it, const T& el) {
+
+	if (it == begin() || empty()) {
+		push_front(el);
+	} else 
+
+	if (it == end()) {
+		push_back(el);
+	} else {
+
+		Node* new_node = new Node{el, it.p_, it.p_->prev_}; 
+
+		it.p_->prev_->next_ = new_node;
+		it.p_->prev_ = new_node;
+
+    size_++;
+	}
+};
+
+template <typename T>
+void List<T>::remove(iterator it) {
+  if (empty()) return;
+
+	if (it == begin()) {
+		pop_front();
+	} else 
+
+	if (it == end()) {
+		pop_back();
+	} else {
+
+
+		it.p_->prev_->next_ = it.p_->next_;
+		it.p_->next_->prev_ = it.p_->prev_;
+
+		it.p_->prev_ = nullptr;
+		it.p_->next_ = nullptr;
+    it.p_ = nullptr;
+
+    size_--;
+	}
 };
