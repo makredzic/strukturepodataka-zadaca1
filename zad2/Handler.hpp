@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <list>
+#include <stdexcept>
+#include <iterator>
 
 struct Handler {
     void print() const;
@@ -11,6 +13,7 @@ struct Handler {
     std::list<char> list_;
     const char dna_[4] = {'A', 'T', 'C', 'G'};
 		bool is_valid(const std::string&) const;
+		short is_valid(short) const;
 };
 
 void Handler::print() const {
@@ -37,14 +40,27 @@ bool Handler::is_valid(const std::string& str) const {
 	return true;
 }
 
+short Handler::is_valid(short position) const {
+
+		if (position < 0) throw std::out_of_range("Pozicija(pos) moze biti samo broj > 0\n");
+		if (position > list_.size()) return list_.size(); //ako je korisnik prekoracio duzinu liste kao pos, samo stavi element na kraj
+		
+		return position;
+}
+
 void Handler::insert() {
 
 		std::string dna_input;
-		unsigned short pos;
+		short pos;
 
 		std::cout << "Position: ";
 		std::cin >> pos;
 
+		try {
+			pos = is_valid(pos); // pos>list_size() , ovdje ce se resetovat na kraj liste da bi program mogao nastaviti i dodati nove elemente na kraj liste
+		} catch (const std::out_of_range& e) {throw e;} //ponovo error bacimo da ga u mainu uhvati try/catch kod poziva insert() metoda 
+
+		//Unos i provjera validnosti DNA sekvence
 		bool isValid;	
 		do {
 
@@ -71,12 +87,31 @@ void Handler::insert() {
 
 void Handler::remove() {
 
+    short pos, len;
+
 		std::cout << "Position: ";
-    unsigned short pos;
     std::cin >> pos;
 
+		try {
+			pos = is_valid(pos); // pos>list_size() , ovdje ce se resetovat na kraj liste da bi program mogao nastaviti i dodati nove elemente na kraj liste
+		} catch (const std::out_of_range& e) {throw e;} //ponovo error bacimo da ga u mainu uhvati try/catch kod poziva insert() metoda 
+
     std::cout << "\nLength: ";
-    unsigned short len;
     std::cin >> len;
+
+		if (len <= 0) throw std::out_of_range("Mozete ukloniti minimalno jedan clan DNA niza.\n");
+
+		auto start = list_.begin(); // iterator na pocetak liste
+		std::advance(start, pos); // iterator se pomjeri sa pocetka za pos elemenata u listi na pos. poziciju 
+
+		//ako je len > distance izmedju lokacije od koje se brise u listi i kraja liste onda ce duzina elemanata biti jednaka toj distanci
+		//drugim rijecima, izbrisat ce se onda svi elementi do kraja liste od lokacije start
+		if (len > std::distance(start, list_.end())) len = std::distance(start, list_.end());
+
+		//end je dokle se brise u listi i to se prvo postavi na isto kao start i onda se pomjeri za len u listi
+		auto end = start;
+		std::advance(end, len);
+
+		list_.erase(start, end);
 
 }

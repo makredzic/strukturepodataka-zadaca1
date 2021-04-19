@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include "Handler.hpp"
 
 const short choices[4] = {1, 2, 3, 4};
@@ -21,11 +22,23 @@ int main() {
         } else
 
         if(cmd == 2) {
+
+					try {
             handler.insert();
+					} catch (const std::out_of_range& e) {
+						std::cout << e.what();
+					}
+					
         } else
 
         if(cmd == 3) {
+
+					try {
             handler.remove();
+					} catch (const std::out_of_range& e) {
+						std::cout << e.what();
+					}
+					
         } else
 
         if(cmd == 4) {
