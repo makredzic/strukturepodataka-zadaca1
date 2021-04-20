@@ -3,45 +3,23 @@
 
 int main ()  {
 
-  List<int> lista1;
-  List<int> lista2;
+	//Default konstruktor - prazna lista
+	List<int> lista;
 
-  lista1.push_back(1);
-  lista1.push_back(1);
-  lista1.push_back(1);
-  lista1.push_back(1);
-  lista1.push_back(1);
+	//inserteri
 
-  lista2.push_back(2);
+	List<int> lista2;
+	lista2.push_back(1);
+	lista2.push_front(0);
+	lista2.push_back(2);
+	lista2.push_back(3);
+	lista2.push_back(4);
+	lista2.push_back(5);
 
-  lista1.print();
-  lista2.print();
-
-  std::cout << std::endl;
-
-  lista2 = std::move(lista1);
-  lista2.push_back(6);
-  lista1.push_back(9);
-  
-  lista2.print();
-  lista1.print();
-
-  std::cout << "TEST PUSH FRONT I BACK" << std::endl;
-  lista1.clear();
-  lista1.push_front(3);
-  lista1.push_front(2);
-  lista1.push_back(4);
-  lista1.push_front(1);
-	lista1.push_back(5);
-  lista1.print();
-	
-	//lista1 = <1, 2, 3, 4, 5>
-	auto it = lista1.begin();
-	it++;
-	it++;
-
-	lista1.insert(it, 20); //izmedju 2 i 3 treba 420 bit
-	// lista1.print();
-
+	auto it2 = lista2.begin();
+	it2++;
+	lista2.insert(it2, 100);
+	lista2.print();
   return 0;
+
 }

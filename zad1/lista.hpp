@@ -53,7 +53,11 @@ public:
     public:
       iterator() = default;
       iterator(Node* ptr) : p_{ptr} {}
-      
+			iterator& operator=(const iterator& other) {
+				p_ = other.p_;
+				return *this;
+			}
+
       iterator& operator++() {
         if (p_ != nullptr) p_ = p_->next_;  
         return *this;
@@ -67,13 +71,16 @@ public:
       };
       
       iterator& operator--() {
-        if (p_ != nullptr) p_ = p_->prev_;  
+        if (p_ == nullptr) p_ = tail_; else
+				if (p_ != head_) p_ = p_->prev_; 
         return *this;
       };
+
       
       iterator operator--(int) {
         auto temp = iterator{p_};
-        if (p_ != nullptr) p_ = p_->prev_;
+        if (p_ == nullptr) p_ = tail_; else
+				if (p_ != head_) p_ = p_->prev_; 
         
         return temp;
       };
@@ -100,7 +107,7 @@ public:
   iterator begin() {return iterator{head_};}
   iterator end() {return iterator{};} //vracamo iterator koji pokazuje na nullptr, default konstruktor inicijalizira sa nullptr pa ne pise u {} eskplicitno nullptr
 
-  void insert(iterator, const T&);
+  void insert(iterator&, const T&);
   void remove(iterator);
   
 };
@@ -145,7 +152,8 @@ template<typename T>
 void List<T>::push_front(const T& el) {
   if (empty()) push_back(el); else {
     Node* new_node_ptr = new Node{el, head_};
-    head_ = new_node_ptr;
+		head_->prev_ = new_node_ptr;
+		head_ = new_node_ptr;
     ++size_;
   }
 
@@ -155,6 +163,7 @@ template<typename T>
 void List<T>::push_front(T&& el) {
   if (empty()) push_back(std::move(el)); else {
     Node* new_node_ptr = new Node{std::move(el), head_};
+		head_->prev_ = new_node_ptr;
     head_ = new_node_ptr;
     ++size_;
   }
@@ -255,7 +264,7 @@ void List<T>::print() const {
 };
 
 template <typename T>
-void List<T>::insert(iterator it, const T& el) {
+void List<T>::insert(iterator& it, const T& el) {
 
 	if (it == begin() || empty()) {
 		push_front(el);
@@ -265,10 +274,14 @@ void List<T>::insert(iterator it, const T& el) {
 		push_back(el);
 	} else {
 
-		Node* new_node = new Node{el, it.p_, it.p_->prev_}; 
+		Node* new_node = new Node{el}; 
+		new_node->next_ = it.p_;
+		new_node->prev_ = it.p_->prev_;
 
 		it.p_->prev_->next_ = new_node;
 		it.p_->prev_ = new_node;
+
+		it.p_ = new_node;
 
     size_++;
 	}
